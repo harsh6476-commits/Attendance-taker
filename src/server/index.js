@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
 mongoose
   .connect(config.MONGO_URI)
   .then(() => {
-    console.log(`[Database] MongoDB connected successfully at ${config.MONGO_URI}`);
+    console.log('[Database] MongoDB connected successfully ');
     app.listen(config.PORT, () => {
       console.log(`[Server] Smart Attendance Server running on port ${config.PORT}`);
     });

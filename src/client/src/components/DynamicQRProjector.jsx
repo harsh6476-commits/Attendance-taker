@@ -15,15 +15,15 @@ export default function DynamicQRProjector({ sessionId, onClose }) {
     fetchStats();
 
     // Rotate token every 3 seconds
-    const tokenInterval = setInterval(fetchToken, 3000);
+    const tokenInterval = setInterval(fetchToken, 300);
     // Refresh live check-in counts every 2 seconds
     const statsInterval = setInterval(fetchStats, 2000);
 
     // Progress bar animation
     const progressInterval = setInterval(() => {
       const now = Date.now();
-      const remaining = 3000 - (now % 3000);
-      setProgress((remaining / 3000) * 100);
+      const remaining = 300 - (now % 300);
+      setProgress((remaining / 300) * 10);
     }, 50);
 
     return () => {
@@ -73,7 +73,7 @@ export default function DynamicQRProjector({ sessionId, onClose }) {
         </div>
         <h1 className="gradient-text" style={{ fontSize: '2.5rem', marginBottom: '0.25rem' }}>Scan Attendance QR</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>
-          Token dynamically rotates every 3 seconds for replay protection
+          Token dynamically rotates every 30 ms for replay protection
         </p>
       </div>
 
