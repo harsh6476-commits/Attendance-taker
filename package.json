@@ -1,0 +1,25 @@
+{
+  "name": "smart-attendance-system",
+  "version": "1.0.0",
+  "description": "Software-only proxy-resistant classroom attendance system with WebAuthn, dynamic signed QR token stream, and confidence scoring.",
+  "main": "src/server/index.js",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "server": "node src/server/index.js",
+    "client": "vite",
+    "dev": "concurrently \"node src/server/index.js\" \"vite\"",
+    "build": "vite build",
+    "seed": "node src/server/seed.js",
+    "test": "node src/server/tests/verification.test.js"
+  },
+  "keywords": [
+    "smart-attendance",
+    "webauthn",
+    "passkeys",
+    "proxy-resistant",
+    "hmac-qr",
+    "mern"
+  ],
+  "author": "",
+  "license": "ISC"
+}
