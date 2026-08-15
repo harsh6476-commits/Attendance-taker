@@ -12,6 +12,20 @@ const cache = require('../utils/cache');
 const User = require('../models/User');
 const WebAuthnCredential = require('../models/WebAuthnCredential');
 
+function getRequestRPID(req) {
+  if (config.RP_ID && config.RP_ID !== 'localhost') return config.RP_ID;
+  const host = req.headers.host || 'localhost';
+  return host.split(':')[0];
+}
+
+function getRequestOrigin(req) {
+  if (req.headers.origin) return req.headers.origin;
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+  const host = req.headers.host || 'localhost:5173';
+  return `${protocol}://${host}`;
+}
+
+
 /**
  * Standard Password Registration
  */
@@ -161,7 +175,7 @@ async function generateWebAuthnRegisterOpts(req, res) {
 
     const options = await generateRegistrationOptions({
       rpName: config.RP_NAME,
-      rpID: config.RP_ID,
+      rpID: getRequestRPID(req),
       userID: Buffer.from(userId),
       userName: req.user.email,
       userDisplayName: req.user.name,
@@ -204,8 +218,8 @@ async function verifyWebAuthnRegistration(req, res) {
     const verification = await verifyRegistrationResponse({
       response,
       expectedChallenge,
-      expectedOrigin: config.ORIGIN,
-      expectedRPID: config.RP_ID
+      expectedOrigin: getRequestOrigin(req),
+      expectedRPID: getRequestRPID(req)
     });
 
     if (!verification.verified || !verification.registrationInfo) {
@@ -246,7 +260,7 @@ async function generateWebAuthnAuthOpts(req, res) {
     }
 
     const options = await generateAuthenticationOptions({
-      rpID: config.RP_ID,
+      rpID: getRequestRPID(req),
       allowCredentials: userCredentials.map(cred => ({
         id: cred.credentialID,
         type: 'public-key',
@@ -287,8 +301,8 @@ async function verifyWebAuthnAuthentication(req, res) {
     const verification = await verifyAuthenticationResponse({
       response,
       expectedChallenge,
-      expectedOrigin: config.ORIGIN,
-      expectedRPID: config.RP_ID,
+      expectedOrigin: getRequestOrigin(req),
+      expectedRPID: getRequestRPID(req),
       authenticator: {
         credentialID: dbCredential.credentialID,
         credentialPublicKey: dbCredential.publicKey,

@@ -122,7 +122,11 @@ export default function ClassDetailsPage() {
       <div style={{ marginTop: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <h2 style={{ fontSize: '1.4rem' }}>Enrolled Students ({enrolledStudents.length})</h2>
-          <a href={`/api/reports/class/${classObj._id}/excel`} className="btn btn-secondary" style={{ fontSize: '0.85rem' }}>
+          <a
+            href={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : ''}/api/reports/class/${classObj._id}/excel`}
+            className="btn btn-secondary"
+            style={{ fontSize: '0.85rem' }}
+          >
             <Download size={16} /> Cumulative Excel (.xlsx)
           </a>
         </div>

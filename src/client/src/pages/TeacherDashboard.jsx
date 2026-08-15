@@ -171,7 +171,12 @@ export default function TeacherDashboard() {
                 <Link to={`/class/${c._id}`} className="btn btn-secondary" style={{ padding: '0.55rem 0.85rem' }}>
                   <Settings size={16} /> Manage
                 </Link>
-                <a href={`/api/reports/class/${c._id}/excel`} className="btn btn-secondary" style={{ padding: '0.55rem 0.85rem' }} title="Export Cumulative Excel">
+                <a
+                  href={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : ''}/api/reports/class/${c._id}/excel`}
+                  className="btn btn-secondary"
+                  style={{ padding: '0.55rem 0.85rem' }}
+                  title="Export Cumulative Excel"
+                >
                   <Download size={16} />
                 </a>
               </div>

@@ -48,6 +48,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal Server Error. Please try again later.' });
 });
 
+// Serve Static Compiled Frontend in Single-Server Mode
+const fs = require('fs');
+const distPath = path.join(__dirname, '../../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 // Database Connection & Server Initialization
 mongoose
   .connect(config.MONGO_URI)

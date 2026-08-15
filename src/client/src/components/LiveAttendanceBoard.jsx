@@ -28,7 +28,10 @@ export default function LiveAttendanceBoard({ sessionId, onEndSession }) {
   }
 
   const handleExportExcel = () => {
-    window.location.href = `/api/reports/session/${sessionId}/excel`;
+    const apiBase = import.meta.env.VITE_API_URL
+      ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api`
+      : '/api';
+    window.location.href = `${apiBase}/reports/session/${sessionId}/excel`;
   };
 
   const handleApplyOverride = async () => {
